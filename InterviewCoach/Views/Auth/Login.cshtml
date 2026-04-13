@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
+    <h2>Interview Coach</h2>
+    <form method="post" action="/Auth/Login">
+        <div style="margin-bottom: 15px;">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required style="width: 100%; padding: 8px; margin-top: 5px;" />
+        </div>
+        <button type="submit" style="width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Login
+        </button>
+    </form>
+</div>

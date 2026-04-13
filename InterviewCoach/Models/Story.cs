@@ -4,6 +4,9 @@
     {
         public int Id { get; set; }
 
+        // Link to the question this story answers
+        public int? QuestionId { get; set; }
+
         public string Situation { get; set; } = string.Empty;
         public string? Task { get; set; }
         public string? Action { get; set; }
@@ -22,10 +25,13 @@
         public string? AuthorName { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Coaching feedback from OpenAI
+        // Coaching feedback from Gemini
         public string? CoachingFeedback { get; set; }
 
         // Navigation: link to practice attempts
         public List<PracticeAttempt> PracticeAttempts { get; set; } = new();
+
+        // User who created this story
+        public int? UserId { get; set; }
     }
 }

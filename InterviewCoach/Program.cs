@@ -17,6 +17,13 @@ namespace InterviewCoach
             builder.Services.AddDbContext<InterviewCoach.Models.InterviewCoachContext>(options =>
                 options.UseSqlite(connectionString));
 
+            // ADD THIS SESSION CONFIGURATION
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
@@ -24,16 +31,17 @@ namespace InterviewCoach
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            // ADD THIS BEFORE MapControllers
+            app.UseSession();
 
-            app.MapStaticAssets();
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
+            app.MapControllers();
 
             app.Run();
         }
