@@ -2,6 +2,8 @@
 {
     public class Story
     {
+        public int? QuestionId { get; set; }
+        public int? UserId { get; set; }
         public int Id { get; set; }
 
         public string Situation { get; set; } = string.Empty;

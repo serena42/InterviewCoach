@@ -10,13 +10,29 @@ namespace InterviewCoach.Models
         {
         }
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Question> Questions { get; set; }
         public DbSet<Story> Stories { get; set; }
         public DbSet<PracticeAttempt> PracticeAttempts { get; set; }
         public DbSet<StarRubric> StarRubrics { get; set; }
+        public DbSet<FeedbackResponse> FeedbackResponse { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure relationships
+            modelBuilder.Entity<Story>()
+                .HasOne<User>()
+                .WithMany(u => u.Stories)
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<PracticeAttempt>()
+                .HasOne(pa => pa.Story)
+                .WithMany(s => s.PracticeAttempts)
+                .HasForeignKey(pa => pa.StoryId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Seed initial rubric data
             modelBuilder.Entity<StarRubric>().HasData(
@@ -49,14 +65,24 @@ namespace InterviewCoach.Models
                     GuidanceDetail = "Strong results are quantified, tied directly to your actions, and include reflection or learning. Weak results are vague ('it went well'), unconnected to your actions, or missing entirely."
                 }
             );
-
-            // Configure relationships
-            modelBuilder.Entity<PracticeAttempt>()
-                .HasOne(pa => pa.Story)
-                .WithMany(s => s.PracticeAttempts)
-                .HasForeignKey(pa => pa.StoryId)
-                .OnDelete(DeleteBehavior.Cascade);
+            
+            // Seed questions
+            SeedQuestions(modelBuilder);
         }
-        public DbSet<InterviewCoach.Models.FeedbackResponse> FeedbackResponse { get; set; } = default!;
+
+        private void SeedQuestions(ModelBuilder modelBuilder)
+        {
+            var questions = new List<Question>
+            {
+                new Question { Id = 1, QuestionId = "Q001", QuestionText = "Tell me about a time you had to influence someone over whom you had no authority.", Competency = "Leadership", QuestionType = "Behavioral", WhyAsked = "" },
+                new Question { Id = 2, QuestionId = "Q002", QuestionText = "Describe a situation where you disagreed with a team decision. What did you do?", Competency = "Collaboration", QuestionType = "Behavioral", WhyAsked = "" },
+                new Question { Id = 3, QuestionId = "Q003", QuestionText = "Give an example of a time you failed. What did you learn?", Competency = "Resilience", QuestionType = "Behavioral", WhyAsked = "" },
+                new Question { Id = 4, QuestionId = "Q004", QuestionText = "Tell me about a time you had to make a decision with incomplete information.", Competency = "Judgment", QuestionType = "Behavioral", WhyAsked = "" },
+                new Question { Id = 5, QuestionId = "Q005", QuestionText = "Describe a time when you had to deliver results under a tight deadline.", Competency = "Execution", QuestionType = "Behavioral", WhyAsked = "" },
+                new Question { Id = 6, QuestionId = "N001", QuestionText = "Tell me about yourself.", Competency = "Self-Presentation", QuestionType = "Narrative", WhyAsked = "Interviewers use this as a warm-up to understand your background, how you communicate, and whether your story is relevant to the role." }
+            };
+            
+            modelBuilder.Entity<Question>().HasData(questions);
+        }
     }
 }

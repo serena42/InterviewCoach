@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="text-center mt-5 mb-5">
+    <h1 class="display-4">Welcome to Interview Coach</h1>
+    <p class="lead">Prepare for your next interview using the STAR method.</p>
+</div>
+
+<div class="row g-4">
+    <!-- Stories Card -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="card-title">My Stories</h4>
+                <p class="card-text text-muted mb-4">Build and manage your repository of real-world experiences using the STAR method (Situation, Task, Action, Result).</p>
+                <a asp-controller="Stories" asp-action="Index" class="btn btn-outline-primary">Manage Stories</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Practice Card -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="card-title">Practice</h4>
+                <p class="card-text text-muted mb-4">Put your stories to the test. Simulate interview questions and practice articulating your answers clearly.</p>
+                <a asp-controller="PracticeAttempts" asp-action="Index" class="btn btn-outline-success">Start Practicing</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Card -->
+    <div class="col-md-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <h4 class="card-title">Review Feedback</h4>
+                <p class="card-text text-muted mb-4">Review feedback from past practice attempts and see how to improve your interview delivery.</p>
+                <a asp-controller="FeedbackResponses" asp-action="Index" class="btn btn-outline-info">View Feedback</a>
+            </div>
+        </div>
+    </div>
+</div>
