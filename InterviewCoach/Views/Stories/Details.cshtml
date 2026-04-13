@@ -1,0 +1,146 @@
+﻿@model InterviewCoach.Models.Story
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Story</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Situation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Situation)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Task)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Task)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Action)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Action)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Result)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Result)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.SituationScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.SituationScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TaskScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TaskScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ActionScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ActionScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ResultScore)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ResultScore)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AuthorName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AuthorName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CoachingFeedback)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CoachingFeedback)
+        </dd>
+    </dl>
+    <div class="card mt-4 mb-4">
+        <div class="card-header">
+            <h5>Get Coaching Feedback</h5>
+        </div>
+        <div class="card-body">
+            <p>Click on a STAR element to get AI-powered coaching feedback.</p>
+            <div class="d-flex gap-2 flex-wrap mb-3">
+                <button class="btn btn-sm btn-outline-primary" onclick="getFeedback(@Model.Id, 'Situation')">
+                    📍 Situation
+                </button>
+                <button class="btn btn-sm btn-outline-primary" onclick="getFeedback(@Model.Id, 'Task')">
+                    ✓ Task
+                </button>
+                <button class="btn btn-sm btn-outline-primary" onclick="getFeedback(@Model.Id, 'Action')">
+                    ⚡ Action
+                </button>
+                <button class="btn btn-sm btn-outline-primary" onclick="getFeedback(@Model.Id, 'Result')">
+                    🎯 Result
+                </button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(Model.CoachingFeedback))
+            {
+                <div class="alert alert-success" role="alert">
+                    <h6>Coaching Feedback</h6>
+                    <p style="white-space: pre-wrap;">@Model.CoachingFeedback</p>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script>
+            async function getFeedback(storyId, element) {
+                const button = event.target;
+                button.disabled = true;
+                button.innerHTML = "Loading...";
+    
+                try {
+                    const response = await fetch('@Url.Action("GetFeedback", "Coach")', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ storyId: storyId, element: element })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Feedback received! Refreshing...');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                        button.disabled = false;
+                        button.innerHTML = element;
+                    }
+                } catch (error) {
+                    alert('Error calling coach: ' + error);
+                    button.disabled = false;
+                    button.innerHTML = element;
+                }
+            }
+    </script>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
