@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿using System.Net.Http;
 using InterviewCoach.Models;
+using InterviewCoach.Services;
 using Xunit;
-// using InterviewCoach.Services; // We will need this later!
+using Moq;
 
 namespace InterviewCoach.Tests
 {
@@ -14,10 +12,9 @@ namespace InterviewCoach.Tests
         public void ParseGeminiResponse_ReturnsCorrectFeedbackResponse()
         {
             // Arrange
-            // 1. Instantiating a service that doesn't exist yet (Red phase of TDD!)
-            var service = new GeminiFeedbackService();
+            var dummyHttpClient = new HttpClient();
+            var service = new GeminiFeedbackService(dummyHttpClient);
 
-            // 2. A simulated JSON response that we expect Gemini to return
             string mockGeminiJson = @"
             {
                 ""SituationScore"": 4.0,
@@ -32,15 +29,54 @@ namespace InterviewCoach.Tests
             }";
 
             // Act
-            // 3. Calling a method that doesn't exist yet
             FeedbackResponse result = service.ParseGeminiResponse(mockGeminiJson);
 
             // Assert
-            // 4. Verifying the parsed data matches what was in the JSON
             Assert.NotNull(result);
             Assert.Equal(4.0f, result.SituationScore);
             Assert.Equal("Good context.", result.SituationFeedback);
             Assert.Equal("Solid answer overall.", result.OverallFeedback);
+        }
+
+        [Fact]
+        public async Task GetRawGeminiResponseAsync_CallsApiAndReturnsString()
+        {
+            // Arrange
+            string fakeResponseJson = "{\"candidates\": [{\"content\": {\"parts\": [{\"text\": \"fake generated feedback\"}]}}]}";
+            
+            // Use a delegating handler instead of mocking HttpMessageHandler directly
+            var delegatingHandler = new FakeDelegatingHandler(fakeResponseJson);
+            var fakeHttpClient = new HttpClient(delegatingHandler);
+            var service = new GeminiFeedbackService(fakeHttpClient);
+
+            var story = new Story { Situation = "Test Situation", Task = "Test Task", Action = "Test Action", Result = "Test Result" };
+
+            // Act
+            string result = await service.GetRawGeminiResponseAsync(story, "fake_api_key");
+
+            // Assert
+            Assert.Equal("fake generated feedback", result);
+        }
+
+        // Simple test delegating handler
+        private class FakeDelegatingHandler : HttpMessageHandler
+        {
+            private readonly string _responseContent;
+
+            public FakeDelegatingHandler(string responseContent)
+            {
+                _responseContent = responseContent;
+            }
+
+            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+            {
+                var response = new HttpResponseMessage
+                {
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Content = new StringContent(_responseContent)
+                };
+                return Task.FromResult(response);
+            }
         }
     }
 }
