@@ -1,0 +1,83 @@
+﻿@model IEnumerable<InterviewCoach.Models.FeedbackResponse>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SituationScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultScore)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SituationFeedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TaskFeedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ActionFeedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ResultFeedback)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OverallFeedback)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SituationScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResultScore)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SituationFeedback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaskFeedback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ActionFeedback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ResultFeedback)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OverallFeedback)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

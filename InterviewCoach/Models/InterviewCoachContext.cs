@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using InterviewCoach.Models;
 
 namespace InterviewCoach.Models
 {
@@ -56,5 +57,6 @@ namespace InterviewCoach.Models
                 .HasForeignKey(pa => pa.StoryId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
+        public DbSet<InterviewCoach.Models.FeedbackResponse> FeedbackResponse { get; set; } = default!;
     }
 }

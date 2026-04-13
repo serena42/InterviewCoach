@@ -34,7 +34,7 @@ namespace InterviewCoach.Controllers
                 var prompt = BuildCoachingPrompt(story, element);
 
                 // Call OpenAI API
-                var chatCompletion = await _openaiClient.GetChatClient("gpt-4o-mini").CreateChatCompletionAsync(
+                var chatCompletion = await _openaiClient.GetChatClient("gpt-4o-mini").CompleteChatAsync(
                     new OpenAI.Chat.ChatMessage[]
                     {
                         new OpenAI.Chat.SystemChatMessage("You are an expert interview coach helping candidates improve their STAR stories for technical interviews."),

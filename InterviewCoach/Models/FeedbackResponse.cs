@@ -2,6 +2,8 @@
 {
     public class FeedbackResponse
     {
+        public int Id { get; set; } 
+
         public float SituationScore { get; set; }
         public float TaskScore { get; set; }
         public float ActionScore { get; set; }
