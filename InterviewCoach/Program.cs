@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using InterviewCoach.Models;
 
 namespace InterviewCoach
 {
@@ -8,32 +9,42 @@ namespace InterviewCoach
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Add services
             builder.Services.AddControllersWithViews();
-            // Add DbContext for SQLite
+            
+            // Add DbContext
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
                 ?? "Data Source=InterviewCoach.db";
-            // note to self: ?? is "null coalescing operator" - if the left side is null, use the right side instead
-            builder.Services.AddDbContext<InterviewCoach.Models.InterviewCoachContext>(options =>
+            builder.Services.AddDbContext<InterviewCoachContext>(options =>
                 options.UseSqlite(connectionString));
 
+            // Add Session
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
             }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseRouting();
+            
+            // IMPORTANT: UseSession() must be after UseRouting()
+            app.UseSession();
 
-            app.UseAuthorization();
-
-            app.MapStaticAssets();
+            // Replace app.MapControllers() with default routing:
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}")
-                .WithStaticAssets();
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
             app.Run();
         }

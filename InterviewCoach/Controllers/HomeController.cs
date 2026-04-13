@@ -1,6 +1,4 @@
-using InterviewCoach.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace InterviewCoach.Controllers
 {
@@ -8,18 +6,22 @@ namespace InterviewCoach.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            return RedirectToAction("Dashboard");
         }
 
-        public IActionResult Privacy()
+        public IActionResult Dashboard()
         {
+            var username = HttpContext.Session.GetString("Username");
+            if (string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Auth");
+            }
             return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
