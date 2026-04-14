@@ -10,11 +10,11 @@ namespace InterviewCoach.Models
         {
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Question> Questions { get; set; }
-        public DbSet<Story> Stories { get; set; }
-        public DbSet<PracticeAttempt> PracticeAttempts { get; set; }
-        public DbSet<StarRubric> StarRubrics { get; set; }
+        public DbSet<User> Users { get; set; } = default!;
+        public DbSet<Question> Questions { get; set; } = default!;
+        public DbSet<Story> Stories { get; set; } = default!;
+        public DbSet<PracticeAttempt> PracticeAttempts { get; set; } = default!;
+        public DbSet<StarRubric> StarRubrics { get; set; } = default!;
         public DbSet<FeedbackResponse> FeedbackResponse { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

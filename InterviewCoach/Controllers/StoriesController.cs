@@ -21,7 +21,7 @@ namespace InterviewCoach.Controllers
         // GET: Stories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Stories.ToListAsync());
+            return View(await _context.Stories.AsNoTracking().ToListAsync());
         }
 
         // GET: Stories/Details/5
@@ -33,6 +33,7 @@ namespace InterviewCoach.Controllers
             }
 
             var story = await _context.Stories
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (story == null)
             {
@@ -124,6 +125,7 @@ namespace InterviewCoach.Controllers
             }
 
             var story = await _context.Stories
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (story == null)
             {
