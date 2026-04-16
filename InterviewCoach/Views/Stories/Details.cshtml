@@ -115,13 +115,10 @@
                 button.innerHTML = "Loading...";
     
                 try {
-                    const response = await fetch('@Url.Action("GetFeedback", "Coach")', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ storyId: storyId, element: element })
-                    });
+                                const url = '@Url.Action("GetFeedback", "Coach")?storyId=' + storyId + '&element=' + element;
+            const response = await fetch(url, {
+                method: 'POST'
+            });
 
                     const data = await response.json();
                     if (data.success) {

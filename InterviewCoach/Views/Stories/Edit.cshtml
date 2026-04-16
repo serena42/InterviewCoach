@@ -1,82 +1,77 @@
 ﻿@model InterviewCoach.Models.Story
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Write Your Story";
 }
 
-<h1>Edit</h1>
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0 fs-4">Build Your Interview Story</h2>
+                    <p class="mb-0 small opacity-75">Question: @Model.Question?.QuestionText</p>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+                        <input type="hidden" asp-for="QuestionId" />
+                        <input type="hidden" asp-for="UserId" />
+                        <input type="hidden" asp-for="AuthorName" />
 
-<h4>Story</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Situation" class="control-label"></label>
-                <input asp-for="Situation" class="form-control" />
-                <span asp-validation-for="Situation" class="text-danger"></span>
+                        <!-- STAR Method Sections - Single Column for maximum readability -->
+                        <div class="row g-4 mb-4">
+                            <!-- Situation -->
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <label asp-for="Situation" class="form-label fw-bold text-primary fs-5 border-bottom pb-2 d-block">S - Situation</label>
+                                    <p class="small text-muted mb-3">Set the scene. Describe the specific event or situation clearly.</p>
+                                    <textarea asp-for="Situation" class="form-control" rows="8" placeholder="Where? When? Who? Describe the context..."></textarea>
+                                    <span asp-validation-for="Situation" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Task -->
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <label asp-for="Task" class="form-label fw-bold text-primary fs-5 border-bottom pb-2 d-block">T - Task</label>
+                                    <p class="small text-muted mb-3">What was the goal? What were you specifically expected to accomplish?</p>
+                                    <textarea asp-for="Task" class="form-control" rows="8" placeholder="Define the challenge and your specific responsibility..."></textarea>
+                                    <span asp-validation-for="Task" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Action -->
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <label asp-for="Action" class="form-label fw-bold text-primary fs-5 border-bottom pb-2 d-block">A - Action</label>
+                                    <p class="small text-muted mb-3">What did YOU specifically do? Detail the steps you took. (Use "I" not "we")</p>
+                                    <textarea asp-for="Action" class="form-control" rows="8" placeholder="Steps you took, reasoning behind them, and how you handled obstacles..."></textarea>
+                                    <span asp-validation-for="Action" class="text-danger small"></span>
+                                </div>
+                            </div>
+
+                            <!-- Result -->
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded-3 border">
+                                    <label asp-for="Result" class="form-label fw-bold text-primary fs-5 border-bottom pb-2 d-block">R - Result</label>
+                                    <p class="small text-muted mb-3">What was the outcome? quantify with numbers or specific outcomes if possible.</p>
+                                    <textarea asp-for="Result" class="form-control" rows="8" placeholder="The impact you made, lessons learned, and final results..."></textarea>
+                                    <span asp-validation-for="Result" class="text-danger small"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center bg-light p-3 rounded-3 mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">Back to My Stories</a>
+                            <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">Save Story</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Task" class="control-label"></label>
-                <input asp-for="Task" class="form-control" />
-                <span asp-validation-for="Task" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Action" class="control-label"></label>
-                <input asp-for="Action" class="form-control" />
-                <span asp-validation-for="Action" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Result" class="control-label"></label>
-                <input asp-for="Result" class="form-control" />
-                <span asp-validation-for="Result" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SituationScore" class="control-label"></label>
-                <input asp-for="SituationScore" class="form-control" />
-                <span asp-validation-for="SituationScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TaskScore" class="control-label"></label>
-                <input asp-for="TaskScore" class="form-control" />
-                <span asp-validation-for="TaskScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ActionScore" class="control-label"></label>
-                <input asp-for="ActionScore" class="form-control" />
-                <span asp-validation-for="ActionScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ResultScore" class="control-label"></label>
-                <input asp-for="ResultScore" class="form-control" />
-                <span asp-validation-for="ResultScore" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AuthorName" class="control-label"></label>
-                <input asp-for="AuthorName" class="form-control" />
-                <span asp-validation-for="AuthorName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CoachingFeedback" class="control-label"></label>
-                <input asp-for="CoachingFeedback" class="form-control" />
-                <span asp-validation-for="CoachingFeedback" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

@@ -3,6 +3,8 @@
     public class Story
     {
         public int? QuestionId { get; set; }
+        // Navigation: link to the question
+        public Question? Question { get; set; }
         public int? UserId { get; set; }
         public int Id { get; set; }
 

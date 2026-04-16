@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using InterviewCoach.Models;
 using System.Net;
 using System.Net.Http;
 using Xunit;
@@ -11,7 +14,19 @@ namespace InterviewCoach.Tests
 
         public AuthControllerTests(WebApplicationFactory<Program> factory)
         {
-            _factory = factory;
+            // Ensure database is created/migrated for tests
+            _factory = factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureServices(services =>
+                {
+                    var sp = services.BuildServiceProvider();
+                    using (var scope = sp.CreateScope())
+                    {
+                        var db = scope.ServiceProvider.GetRequiredService<InterviewCoachContext>();
+                        db.Database.EnsureCreated();
+                    }
+                });
+            });
         }
 
         [Fact]
